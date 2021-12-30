@@ -1,4 +1,5 @@
 package sprint1;
+
 import java.net.PasswordAuthentication;
 import java.util.Scanner;
 
