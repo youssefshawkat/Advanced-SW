@@ -55,30 +55,6 @@ public class Driver extends User{
         return s ;
     }
 
-
-    public float Offer(Client c, String dest) // here
-    {
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("Do you accept this ride?");
-        System.out.println("1- Yes");
-        System.out.println("2- No");
-
-        int i = input.nextInt();
-
-        if (i ==1)
-        {
-            System.out.println("Enter offer");
-            float f = input.nextFloat();
-            return f;
-        }
-
-        else
-        {
-            return 0;
-        }
-    }
-
     void SetAvgRating(int rate)
     {
 

@@ -14,14 +14,6 @@ public class Admin {
 
     boolean Verify(int i)
     {
-        //Scanner input = new Scanner(System.in);
-
-        /*System.out.println("Do you want to verify this driver?");
-        System.out.println("1- yes");
-        System.out.println("2- no");*/
-
-        //int i = input.nextInt();
-
         if (i == 1)
         {
             return true;

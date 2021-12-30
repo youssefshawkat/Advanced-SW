@@ -323,7 +323,7 @@ public class Sprint1 {
                 String st = input.next();
                 System.out.println("Enter your destination area");
                 String des = input.next();
-                database.Request(c, st, des);
+                Request(c, st, des);
                 break;
 
             case 2:
@@ -485,6 +485,77 @@ public class Sprint1 {
             }
         }
         return null;
+    }
+
+
+    public static float Offer(Client c, String dest) // here
+    {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Do you accept this ride?");
+        System.out.println("1- Yes");
+        System.out.println("2- No");
+
+        int i = input.nextInt();
+
+        if (i ==1)
+        {
+            System.out.println("Enter offer");
+            float f = input.nextFloat();
+            return f;
+        }
+
+        else
+        {
+            return 0;
+        }
+    }
+
+    public static void Request(Client c, String src, String dest)
+    {
+        Notify(c, src, dest);
+    }
+
+    public static void Notify(Client c, String src, String des)
+    {
+        Scanner input = new Scanner(System.in);
+        for (int i = 0; i < Drivers.size(); i++)
+        {
+            for (int j = 0; j < Drivers.get(i).favAreas.size(); j++)
+            {
+                if (src.equals(Drivers.get(i).favAreas.get(j)) && Drivers.get(i).Verified == true)
+                {
+                    System.out.println("There is a Client you can pick, " + Drivers.get(i).name + " from " + Drivers.get(i).favAreas.get(j));
+                    System.out.println("The Client Destination is " + des);
+
+                    float temp = Offer(c, des);
+                    if  (temp == 0)
+                    {
+                        continue;
+                    }
+
+                    else
+                    {
+                        int res;
+                        System.out.println("There's an offer from driver " + Drivers.get(i).name + ", " + temp);
+                        System.out.println("Do you accept?");
+                        System.out.println("1- Yes");
+                        System.out.println("2- No");
+
+                        res = input.nextInt();
+                        if ((c.Response(res)) == true)
+                        {
+                            System.out.println("Rate the driver (out of 5)");
+                            int rate = input.nextInt();
+
+                            Drivers.get(i).SetAvgRating(c.RateDriver(Drivers.get(i), rate));
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
