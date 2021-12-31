@@ -8,7 +8,7 @@ import static sprint1.Database.Pending;
 
 public class Sprint1 {
 
-    static Database database = new Database();
+    static Database database = Database.getDatabase();
 
     public static void MainMenu()
     {

@@ -20,12 +20,8 @@ public class Client extends User{
         return s ;
     }
 
-    public boolean Response (int i) // here
+    public boolean Response (int i)
     {
-        /*System.out.println("There's an offer from driver " + d.name + ", " + offer);
-        System.out.println("Do you accept?");
-        System.out.println("1- Yes");
-        System.out.println("2- No")*/
         if (i == 1)
         {
             return true;
@@ -37,7 +33,7 @@ public class Client extends User{
         }
     }
 
-    int RateDriver(Driver d, int i) // here
+    int RateDriver(Driver d, int i)
     {
         d.Ratings.add(i);
 

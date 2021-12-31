@@ -13,36 +13,10 @@ public class Driver extends User{
     public float avgRating;
     public boolean Verified = false;
 
-    //public Database db;
-
-
-    Scanner input = new Scanner(System.in);
-
-
     Driver()
     {
 
     }
-
-    /*Driver( String Name ,String Password,String Mobile,String N_ID,String DL,String EM)
-    {
-        NationalId = N_ID;
-        Driver_license = DL;
-        name = Name;
-        MobileNum = Mobile;
-        this.Password = Password;
-        Email = EM;
-    }
-
-
-    Driver( String Name ,String Password,String Mobile,String N_ID,String DL)
-    {
-        NationalId = N_ID;
-        Driver_license = DL;
-        name = Name;
-        MobileNum = Mobile;
-        this.Password = Password;
-    }*/
 
     @Override
     public String toString()
