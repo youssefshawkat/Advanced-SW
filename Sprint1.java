@@ -1,10 +1,9 @@
 package sprint1;
 
 import static java.lang.System.exit;
+import static sprint1.Database.*;
+
 import java.util.Scanner;
-import static sprint1.Database.Clients;
-import static sprint1.Database.Drivers;
-import static sprint1.Database.Pending;
 
 public class Sprint1 {
 
@@ -304,7 +303,7 @@ public class Sprint1 {
         }
     }
 
-    public static void UsersMenu(Client c) // here
+    public static void UsersMenu(Client c)
     {
         Scanner input = new Scanner(System.in);
 
@@ -324,6 +323,7 @@ public class Sprint1 {
                 System.out.println("Enter your destination area");
                 String des = input.next();
                 Request(c, st, des);
+                UsersMenu (c);
                 break;
 
             case 2:
@@ -333,6 +333,8 @@ public class Sprint1 {
                     System.out.println(Drivers.get(j).name + ":");
                     System.out.println(Drivers.get(j).avgRating);
                 }
+
+                UsersMenu (c);
                 break;
 
             case 3:
@@ -342,14 +344,15 @@ public class Sprint1 {
 
     }
 
-    public static void DriversMenu (Driver d) // here
+    public static void DriversMenu (Driver d)
     {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Welcome back, " + d.name);
         System.out.println("1- List ratings");
         System.out.println("2- Enter favourite area");
-        System.out.println("3- Exit");
+        System.out.println("3- Show Balance");
+        System.out.println("4- Exit");
 
         int i = input.nextInt();
 
@@ -360,28 +363,38 @@ public class Sprint1 {
                 for (int j = 0; j < d.Ratings.size(); j++)
                 {
                     System.out.println(d.Ratings.get(j));
-                }   break;
+                }
+                DriversMenu(d);
+                break;
 
             case 2:
 
                 Sprint1.AddFavArea(d);
+                DriversMenu(d);
                 break;
 
             case 3:
+
+                System.out.println("Your balance is: " + d.getBalance());
+                DriversMenu(d);
+                break;
+
+            case 4:
 
                 Sprint1.MainMenu();
                 break;
         }
     }
 
-    public static void AdminsMenu(Admin a) //here
+    public static void AdminsMenu(Admin a)
     {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Welcome back, " + a.Name);
         System.out.println("1- Verify Drivers");
         System.out.println("2- Suspend Users");
-        System.out.println("3- Exit");
+        System.out.println("3- Add an area with discount");
+        System.out.println("4- Exit");
 
         int i = input.nextInt();
 
@@ -417,6 +430,7 @@ public class Sprint1 {
                     }
                 }
 
+                AdminsMenu(a);
                 break;
 
             case 2:
@@ -456,9 +470,18 @@ public class Sprint1 {
                     }
                 }
 
+                AdminsMenu(a);
                 break;
 
             case 3:
+                System.out.println("Enter the name of the area");
+                String area = input.next();
+                AreasWithDiscount.add(area);
+
+                AdminsMenu(a);
+                break;
+
+            case 4:
                 Sprint1.MainMenu();
         }
     }
@@ -528,23 +551,32 @@ public class Sprint1 {
                     System.out.println("There is a Client you can pick, " + Drivers.get(i).name + " from " + Drivers.get(i).favAreas.get(j));
                     System.out.println("The Client Destination is " + des);
 
-                    float temp = Offer(c, des);
-                    if  (temp == 0)
+                    float driverPrice = Offer(c, des);
+                    if  (driverPrice == 0)
                     {
                         continue;
                     }
 
                     else
                     {
-                        int res;
-                        System.out.println("There's an offer from driver " + Drivers.get(i).name + ", " + temp);
+                        float clientPrice = driverPrice;
+                        for (int k = 0; k < AreasWithDiscount.size(); k++)
+                        {
+                            if (AreasWithDiscount.get(k).equals(des))
+                            {
+                                clientPrice = Discount (driverPrice,10);
+                            }
+                        }
+                        int resp;
+                        System.out.println("There's an offer from driver " + Drivers.get(i).name + ", " + clientPrice);
                         System.out.println("Do you accept?");
                         System.out.println("1- Yes");
                         System.out.println("2- No");
 
-                        res = input.nextInt();
-                        if ((c.Response(res)) == true)
+                        resp = input.nextInt();
+                        if ((c.Response(resp)) == true)
                         {
+                            Drivers.get(i).setBalance(driverPrice);
                             System.out.println("Rate the driver (out of 5)");
                             int rate = input.nextInt();
 
@@ -556,6 +588,13 @@ public class Sprint1 {
                 }
             }
         }
+    }
+
+    public static float Discount(float price, int discount)
+    {
+        float dis = (price / 100) * discount ;
+        float newPrice = price - dis;
+        return newPrice;
     }
 
 

@@ -11,6 +11,7 @@ public class Driver extends User{
     public ArrayList<Integer> Ratings = new ArrayList<Integer> ();
     public int rideNum = 0;
     public float avgRating;
+    public float balance = 0;
     public boolean Verified = false;
 
     Driver()
@@ -31,9 +32,18 @@ public class Driver extends User{
 
     void SetAvgRating(int rate)
     {
-
         float i = avgRating * rideNum;
         rideNum++;
         avgRating = (i + rate) / (float) (rideNum);
+    }
+
+    public void setBalance(float bal)
+    {
+        balance += bal;
+    }
+
+    public float getBalance()
+    {
+        return balance;
     }
 }

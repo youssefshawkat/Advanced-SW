@@ -11,6 +11,7 @@ public class Database {
     public static ArrayList<Client> Clients = new ArrayList<Client>();
     public static ArrayList<Ride> Rides = new ArrayList<Ride>();
     public static ArrayList<Driver> Pending = new ArrayList<Driver>();
+    public static ArrayList<String> AreasWithDiscount = new ArrayList<String>();
     public static Database database;
 
     public Admin Admin = new Admin("Mahmoud","mahmoud1804");
