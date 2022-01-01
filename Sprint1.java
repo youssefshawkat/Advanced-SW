@@ -328,29 +328,42 @@ public class Sprint1 {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Welcome back, " + d.name);
-        System.out.println("1- List ratings");
-        System.out.println("2- Enter favourite area");
-        System.out.println("3- Show Balance");
-        System.out.println("4- Exit");
+        System.out.println("1- Finish Ride");
+        System.out.println("2- List ratings");
+        System.out.println("3- Enter favourite area");
+        System.out.println("4- Show Balance");
+        System.out.println("5- Exit");
 
         int i = input.nextInt();
 
         switch (i) {
             case 1 -> {
+                if (d.available == false)
+                {
+                    d.available = true;
+                }
+
+                else
+                {
+                    System.out.println("You don't have any unfinished rides at the moment.");
+                }
+                DriversMenu(d);
+            }
+            case 2 -> {
                 for (int j = 0; j < d.Ratings.size(); j++) {
                     System.out.println(d.Ratings.get(j));
                 }
                 DriversMenu(d);
             }
-            case 2 -> {
+            case 3 -> {
                 Sprint1.AddFavArea(d);
                 DriversMenu(d);
             }
-            case 3 -> {
+            case 4 -> {
                 System.out.println("Your balance is: " + d.getBalance());
                 DriversMenu(d);
             }
-            case 4 -> Sprint1.MainMenu();
+            case 5 -> Sprint1.MainMenu();
         }
     }
 
@@ -486,10 +499,11 @@ public class Sprint1 {
 
     public static void Notify(Client c, String src, String des,int Num_p)
     {
+        int foundDriver = 0;
         Scanner input = new Scanner(System.in);
         for (Driver driver : Drivers) {
             for (int j = 0; j < driver.favAreas.size(); j++) {
-                if (src.equals(driver.favAreas.get(j)) && driver.Verified) {
+                if (src.equals(driver.favAreas.get(j)) && driver.Verified && driver.available) {
                     System.out.println("There is a Client you can pick, " + driver.name + " from " + driver.favAreas.get(j));
                     System.out.println("The Client Destination is " + des);
 
@@ -507,7 +521,9 @@ public class Sprint1 {
 
                         resp = input.nextInt();
                         if ((c.Response(resp))) {
+                            foundDriver = 1;
                             driver.setBalance(driverPrice);
+                            driver.available = false;
                             System.out.println("Rate the driver (out of 5)");
                             int rate = input.nextInt();
 
@@ -517,6 +533,11 @@ public class Sprint1 {
                         }
                     }
                 }
+            }
+            if (foundDriver == 1)
+            {
+                foundDriver = 0;
+                break;
             }
         }
     }
@@ -565,7 +586,7 @@ public class Sprint1 {
         if(c.Birthday.substring(0,5).equals(formattedDate)){
 
 
-            discount = discount+5;
+            discount = discount+10;
         }
 
         price = Discount(price,discount);

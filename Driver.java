@@ -13,6 +13,7 @@ public class Driver extends User{
     public float avgRating;
     public float balance = 0;
     public boolean Verified = false;
+    public boolean available = true;
 
     Driver()
     {
