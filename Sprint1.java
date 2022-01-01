@@ -529,22 +529,23 @@ public class Sprint1 {
     }
 
     public static float discounts(float price,Client c,int Num_p,String des){
+        int discount = 0;
+
         //first ride discount
         if(c.getNum_r() == 0){
-
-           price =Discount(price,10);
+           discount = discount + 10;
         }
         //Areas with discounts added by admin
         for (String s : AreasWithDiscount) {
             if (s.equals(des)) {
-                price = Discount(price, 10);
+                discount = discount+10;
             }
 
         }
         //if the ride contains two passengers
         if(Num_p == 2){
 
-            price =Discount(price,5);
+            discount = discount+5;
 
         }
 
@@ -554,7 +555,7 @@ public class Sprint1 {
         String formattedDate = date.format(myFormatObj);
         for(String d : PublicHolidays){
             if(d.equals(formattedDate)){
-                price = Discount(price, 5);
+                discount = discount+5;
             }
 
         }
@@ -563,8 +564,11 @@ public class Sprint1 {
         //if the ride matches client's birthday
         if(c.Birthday.substring(0,5).equals(formattedDate)){
 
-            price = Discount(price, 10);
+
+            discount = discount+5;
         }
+
+        price = Discount(price,discount);
 
         return price;
 
