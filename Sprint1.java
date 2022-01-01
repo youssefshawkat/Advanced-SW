@@ -21,16 +21,10 @@ public class Sprint1 {
 
             int n = input.nextInt();
 
-            switch(n)
-            {
-                case 1:
-                    RegisterUser();
-                    break;
-                case 2:
-                    Login();
-                    break;
-                case 3:
-                    exit(0);
+            switch (n) {
+                case 1 -> RegisterUser();
+                case 2 -> Login();
+                case 3 -> exit(0);
             }
         }
     }
@@ -69,25 +63,10 @@ public class Sprint1 {
         i = input.nextInt();
         input.nextLine();
 
-        switch(i)
-        {
-
-            case 1:
-            {
-                DriverLogin();
-                break;
-            }
-
-            case 2:
-            {
-                ClientLogin();
-                break;
-            }
-
-            case 3:
-            {
-                AdminLogin();
-            }
+        switch (i) {
+            case 1 -> DriverLogin();
+            case 2 -> ClientLogin();
+            case 3 -> AdminLogin();
         }
     }
 
@@ -122,7 +101,6 @@ public class Sprint1 {
     public static void GetDriverData()
     {
         Scanner input = new Scanner(System.in);
-        int i;
 
         System.out.println("Name :");
         String n = input.nextLine();
@@ -200,13 +178,13 @@ public class Sprint1 {
             {
                 if (Database.Drivers.get(i).Password.equals(s1))
                 {
-                    if (Database.Drivers.get(i).Verified == false)
+                    if (!Database.Drivers.get(i).Verified)
                     {
                         System.out.println("your account isn't verified yet.");
                         MainMenu();
                     }
 
-                    else if (Database.Drivers.get(i).Suspended == true)
+                    else if (Database.Drivers.get(i).Suspended)
                     {
                         System.out.println("your account is suspended.");
                         MainMenu();
@@ -251,7 +229,7 @@ public class Sprint1 {
             {
                 if (Database.Clients.get(i).Password.equals(s1))
                 {
-                    if (Database.Clients.get(i).Suspended == true)
+                    if (Database.Clients.get(i).Suspended)
                     {
                         System.out.println("your account is suspended.");
                         MainMenu();
@@ -315,31 +293,22 @@ public class Sprint1 {
         int i = input.nextInt();
 
         switch (i) {
-
-            case 1:
-
+            case 1 -> {
                 System.out.println("Enter your source area");
                 String st = input.next();
                 System.out.println("Enter your destination area");
                 String des = input.next();
                 Request(c, st, des);
-                UsersMenu (c);
-                break;
-
-            case 2:
-
-                for (int j = 0; j < Drivers.size(); j++)
-                {
-                    System.out.println(Drivers.get(j).name + ":");
-                    System.out.println(Drivers.get(j).avgRating);
+                UsersMenu(c);
+            }
+            case 2 -> {
+                for (Driver driver : Drivers) {
+                    System.out.println(driver.name + ":");
+                    System.out.println(driver.avgRating);
                 }
-
-                UsersMenu (c);
-                break;
-
-            case 3:
-                Sprint1.MainMenu();
-                break;
+                UsersMenu(c);
+            }
+            case 3 -> Sprint1.MainMenu();
         }
 
     }
@@ -357,32 +326,21 @@ public class Sprint1 {
         int i = input.nextInt();
 
         switch (i) {
-
-            case 1:
-
-                for (int j = 0; j < d.Ratings.size(); j++)
-                {
+            case 1 -> {
+                for (int j = 0; j < d.Ratings.size(); j++) {
                     System.out.println(d.Ratings.get(j));
                 }
                 DriversMenu(d);
-                break;
-
-            case 2:
-
+            }
+            case 2 -> {
                 Sprint1.AddFavArea(d);
                 DriversMenu(d);
-                break;
-
-            case 3:
-
+            }
+            case 3 -> {
                 System.out.println("Your balance is: " + d.getBalance());
                 DriversMenu(d);
-                break;
-
-            case 4:
-
-                Sprint1.MainMenu();
-                break;
+            }
+            case 4 -> Sprint1.MainMenu();
         }
     }
 
@@ -398,12 +356,10 @@ public class Sprint1 {
 
         int i = input.nextInt();
 
-        switch(i)
-        {
-            case 1:
+        switch (i) {
+            case 1 -> {
                 int temp = Pending.size();
-                for (int j = 0; j < temp; j++)
-                {
+                for (int j = 0; j < temp; j++) {
                     System.out.println(Pending.get(j).toString());
 
                     System.out.println("Do you want to verify this driver?");
@@ -413,76 +369,55 @@ public class Sprint1 {
                     int c = input.nextInt();
                     boolean answer = a.Verify(c);
 
-                    for (int k = 0; k < Drivers.size(); k++)
-                    {
-                        if (Drivers.get(k).name.equals(Pending.get(j).name))
-                        {
-                            Drivers.get(k).Verified = answer;
+                    for (Driver driver : Drivers) {
+                        if (driver.name.equals(Pending.get(j).name)) {
+                            driver.Verified = answer;
                         }
                     }
 
 
-                    if (answer == true)
-                    {
+                    if (answer) {
                         Pending.remove(Pending.get(j));
                         j--;
                         temp--;
                     }
                 }
-
                 AdminsMenu(a);
-                break;
-
-            case 2:
+            }
+            case 2 -> {
                 Scanner input2 = new Scanner(System.in);
-
                 System.out.println("who do you want to suspend?");
                 System.out.println("1- Driver");
                 System.out.println("2- Client");
-
                 i = input.nextInt();
-
-                if(i == 1)
-                {
+                if (i == 1) {
                     System.out.println("Enter the name");
                     String s = input2.nextLine();
 
-                    for (int j = 0; j < Drivers.size(); j++)
-                    {
-                        if (Drivers.get(j).name.equals(s))
-                        {
-                            a.Suspend(Drivers.get(j));
+                    for (Driver driver : Drivers) {
+                        if (driver.name.equals(s)) {
+                            a.Suspend(driver);
                         }
                     }
-                }
-
-                else
-                {
+                } else {
                     System.out.println("Enter the name");
                     String s = input2.nextLine();
 
-                    for (int j = 0; j < Clients.size(); j++)
-                    {
-                        if (Clients.get(j).name.equals(s))
-                        {
-                            a.Suspend(Clients.get(j));
+                    for (Client client : Clients) {
+                        if (client.name.equals(s)) {
+                            a.Suspend(client);
                         }
                     }
                 }
-
                 AdminsMenu(a);
-                break;
-
-            case 3:
+            }
+            case 3 -> {
                 System.out.println("Enter the name of the area");
                 String area = input.next();
                 AreasWithDiscount.add(area);
-
                 AdminsMenu(a);
-                break;
-
-            case 4:
-                Sprint1.MainMenu();
+            }
+            case 4 -> Sprint1.MainMenu();
         }
     }
 
@@ -542,45 +477,35 @@ public class Sprint1 {
     public static void Notify(Client c, String src, String des)
     {
         Scanner input = new Scanner(System.in);
-        for (int i = 0; i < Drivers.size(); i++)
-        {
-            for (int j = 0; j < Drivers.get(i).favAreas.size(); j++)
-            {
-                if (src.equals(Drivers.get(i).favAreas.get(j)) && Drivers.get(i).Verified == true)
-                {
-                    System.out.println("There is a Client you can pick, " + Drivers.get(i).name + " from " + Drivers.get(i).favAreas.get(j));
+        for (Driver driver : Drivers) {
+            for (int j = 0; j < driver.favAreas.size(); j++) {
+                if (src.equals(driver.favAreas.get(j)) && driver.Verified) {
+                    System.out.println("There is a Client you can pick, " + driver.name + " from " + driver.favAreas.get(j));
                     System.out.println("The Client Destination is " + des);
 
                     float driverPrice = Offer(c, des);
-                    if  (driverPrice == 0)
-                    {
+                    if (driverPrice == 0) {
                         continue;
-                    }
-
-                    else
-                    {
+                    } else {
                         float clientPrice = driverPrice;
-                        for (int k = 0; k < AreasWithDiscount.size(); k++)
-                        {
-                            if (AreasWithDiscount.get(k).equals(des))
-                            {
-                                clientPrice = Discount (driverPrice,10);
+                        for (String s : AreasWithDiscount) {
+                            if (s.equals(des)) {
+                                clientPrice = Discount(driverPrice, 10);
                             }
                         }
                         int resp;
-                        System.out.println("There's an offer from driver " + Drivers.get(i).name + ", " + clientPrice);
+                        System.out.println("There's an offer from driver " + driver.name + ", " + clientPrice);
                         System.out.println("Do you accept?");
                         System.out.println("1- Yes");
                         System.out.println("2- No");
 
                         resp = input.nextInt();
-                        if ((c.Response(resp)) == true)
-                        {
-                            Drivers.get(i).setBalance(driverPrice);
+                        if ((c.Response(resp))) {
+                            driver.setBalance(driverPrice);
                             System.out.println("Rate the driver (out of 5)");
                             int rate = input.nextInt();
 
-                            Drivers.get(i).SetAvgRating(c.RateDriver(Drivers.get(i), rate));
+                            driver.SetAvgRating(c.RateDriver(driver, rate));
 
                             break;
                         }
