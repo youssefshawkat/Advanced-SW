@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class Client extends User{
 
+    private int Num_r = 0;
+    public String Birthday;
+
     Client()
     {
 
@@ -24,6 +27,7 @@ public class Client extends User{
     {
         if (i == 1)
         {
+            Num_r++;
             return true;
         }
 
@@ -38,5 +42,9 @@ public class Client extends User{
         d.Ratings.add(i);
 
         return i;
+    }
+    int getNum_r(){
+
+        return Num_r;
     }
 }
