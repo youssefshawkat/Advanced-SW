@@ -3,6 +3,8 @@ package sprint1;
 import static java.lang.System.exit;
 import static sprint1.Database.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Sprint1 {
@@ -86,12 +88,17 @@ public class Sprint1 {
         String pn = input.nextLine();
         System.out.println("Email (Optional) :");
         String em = input.nextLine();
+        System.out.println("Birthday :  ");
+        System.out.println("Please Enter in This Format : (dd-MM-yyyy)");
+        String bd = input.nextLine();
+
 
         Client c = new Client();
         c.name = n;
         c.Password= p;
         c.Email = em;
         c.MobileNum = pn;
+        c.Birthday = bd;
 
         Database.Clients.add(c);
         MainMenu();
@@ -127,6 +134,7 @@ public class Sprint1 {
         d.NationalId = ni;
         d.MobileNum = pn;
         d.Driver_license = dl;
+
 
         database.setDrivers(d);
         System.out.println("Add favourite Areas:");
@@ -294,11 +302,13 @@ public class Sprint1 {
 
         switch (i) {
             case 1 -> {
-                System.out.println("Enter your source area");
+                System.out.println("Enter your source area: ");
                 String st = input.next();
-                System.out.println("Enter your destination area");
+                System.out.println("Enter your destination area: ");
                 String des = input.next();
-                Request(c, st, des);
+                System.out.println("Enter Number of Passengers: ");
+                int p = input.nextInt();
+                Request(c, st, des,p);
                 UsersMenu(c);
             }
             case 2 -> {
@@ -469,12 +479,12 @@ public class Sprint1 {
         }
     }
 
-    public static void Request(Client c, String src, String dest)
+    public static void Request(Client c, String src, String dest, int p)
     {
-        Notify(c, src, dest);
+        Notify(c, src, dest,p);
     }
 
-    public static void Notify(Client c, String src, String des)
+    public static void Notify(Client c, String src, String des,int Num_p)
     {
         Scanner input = new Scanner(System.in);
         for (Driver driver : Drivers) {
@@ -487,12 +497,8 @@ public class Sprint1 {
                     if (driverPrice == 0) {
                         continue;
                     } else {
-                        float clientPrice = driverPrice;
-                        for (String s : AreasWithDiscount) {
-                            if (s.equals(des)) {
-                                clientPrice = Discount(driverPrice, 10);
-                            }
-                        }
+                        float clientPrice = discounts(driverPrice,c,Num_p,des);
+
                         int resp;
                         System.out.println("There's an offer from driver " + driver.name + ", " + clientPrice);
                         System.out.println("Do you accept?");
@@ -521,6 +527,53 @@ public class Sprint1 {
         float newPrice = price - dis;
         return newPrice;
     }
+
+    public static float discounts(float price,Client c,int Num_p,String des){
+        //first ride discount
+        if(c.getNum_r() == 0){
+
+           price =Discount(price,10);
+        }
+        //Areas with discounts added by admin
+        for (String s : AreasWithDiscount) {
+            if (s.equals(des)) {
+                price = Discount(price, 10);
+            }
+
+        }
+        //if the ride contains two passengers
+        if(Num_p == 2){
+
+            price =Discount(price,5);
+
+        }
+
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = date.format(myFormatObj);
+        for(String d : PublicHolidays){
+            if(d.equals(formattedDate)){
+                price = Discount(price, 5);
+            }
+
+        }
+        myFormatObj = DateTimeFormatter.ofPattern("dd-MM");
+        formattedDate = date.format(myFormatObj);
+        //if the ride matches client's birthday
+        if(c.Birthday.substring(0,5).equals(formattedDate)){
+
+            price = Discount(price, 10);
+        }
+
+        return price;
+
+
+
+    }
+
+
+
 
 
     public static void main(String[] args) {
