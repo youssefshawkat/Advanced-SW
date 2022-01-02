@@ -29,4 +29,16 @@ public class Admin {
     {
         u.Suspended = true;
     }
+
+    public void ShowRideEvents()
+    {
+        System.out.println();
+        for (int i = 0; i < Database.Rides.size(); i++)
+        {
+            System.out.println("Ride #" + (i+1));
+            for (int j = 0; j < Database.Rides.get(i).Events.size(); j++)
+            Database.Rides.get(i).Events.get(j).GetEventDetails();
+            System.out.println();
+        }
+    }
 }

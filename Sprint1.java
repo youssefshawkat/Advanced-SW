@@ -4,6 +4,7 @@ import static java.lang.System.exit;
 import static sprint1.Database.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -375,7 +376,8 @@ public class Sprint1 {
         System.out.println("1- Verify Drivers");
         System.out.println("2- Suspend Users");
         System.out.println("3- Add an area with discount");
-        System.out.println("4- Exit");
+        System.out.println("4- Show ride events");
+        System.out.println("5- Exit");
 
         int i = input.nextInt();
 
@@ -440,7 +442,13 @@ public class Sprint1 {
                 AreasWithDiscount.add(area);
                 AdminsMenu(a);
             }
-            case 4 -> Sprint1.MainMenu();
+
+            case 4 -> {
+                a.ShowRideEvents();
+                AdminsMenu(a);
+            }
+
+            case 5 -> Sprint1.MainMenu();
         }
     }
 
@@ -508,10 +516,18 @@ public class Sprint1 {
                     System.out.println("The Client Destination is " + des);
 
                     float driverPrice = Offer(c, des);
+                    LocalDateTime offerTime = LocalDateTime.now();
+                    DateTimeFormatter formatTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                    String formattedTime = offerTime.format(formatTime);
+
                     if (driverPrice == 0) {
                         continue;
                     } else {
                         float clientPrice = discounts(driverPrice,c,Num_p,des);
+
+                        DriverOffer DO = new DriverOffer(driver, driverPrice, formattedTime);
+                        Ride r = new Ride();
+                        r.Events.add(DO);
 
                         int resp;
                         System.out.println("There's an offer from driver " + driver.name + ", " + clientPrice);
@@ -519,15 +535,41 @@ public class Sprint1 {
                         System.out.println("1- Yes");
                         System.out.println("2- No");
 
+                        LocalDateTime acceptanceTime = LocalDateTime.now();
+                        DateTimeFormatter formatAcceptanceTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                        String formattedAcceptanceTime = offerTime.format(formatAcceptanceTime);
+
+                        ClientAcceptance CA = new ClientAcceptance(c,formattedAcceptanceTime);
+                        r.Events.add(CA);
+
                         resp = input.nextInt();
                         if ((c.Response(resp))) {
                             foundDriver = 1;
+                            r.c = c;
+                            r.d = driver;
+                            r.price = clientPrice;
+
+                            LocalDateTime sourceArrivalTime = LocalDateTime.now();
+                            DateTimeFormatter formatSourceArrivalTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                            String formattedSourceArrivalTime = offerTime.format(formatSourceArrivalTime);
+
+                            SourceArrival SA = new SourceArrival(driver,c,formattedSourceArrivalTime);
+                            r.Events.add(SA);
+
                             driver.setBalance(driverPrice);
                             driver.available = false;
                             System.out.println("Rate the driver (out of 5)");
                             int rate = input.nextInt();
 
                             driver.SetAvgRating(c.RateDriver(driver, rate));
+
+                            LocalDateTime destArrivalTime = LocalDateTime.now();
+                            DateTimeFormatter formatDestArrivalTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                            String formattedDestArrivalTime = offerTime.format(formatDestArrivalTime);
+
+                            DestinationArrival DA = new DestinationArrival(driver,c,formattedSourceArrivalTime);
+                            r.Events.add(DA);
+                            Rides.add(r);
 
                             break;
                         }
