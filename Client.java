@@ -6,6 +6,7 @@ public class Client extends User{
 
     private int Num_r = 0;
     public String Birthday;
+    public boolean inRide = false;
 
     Client()
     {
@@ -28,6 +29,7 @@ public class Client extends User{
         if (i == 1)
         {
             Num_r++;
+            inRide = true;
             return true;
         }
 

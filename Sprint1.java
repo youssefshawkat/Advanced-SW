@@ -303,14 +303,19 @@ public class Sprint1 {
 
         switch (i) {
             case 1 -> {
-                System.out.println("Enter your source area: ");
-                String st = input.next();
-                System.out.println("Enter your destination area: ");
-                String des = input.next();
-                System.out.println("Enter Number of Passengers: ");
-                int p = input.nextInt();
-                Request(c, st, des,p);
-                UsersMenu(c);
+                if(!c.inRide) {
+                    System.out.println("Enter your source area: ");
+                    String st = input.next();
+                    System.out.println("Enter your destination area: ");
+                    String des = input.next();
+                    System.out.println("Enter Number of Passengers: ");
+                    int p = input.nextInt();
+                    Request(c, st, des, p);
+                    UsersMenu(c);
+                }
+                else{
+                    System.out.println("You're Currently in a Ride. Please finish the current ride before requesting a new one.");
+                }
             }
             case 2 -> {
                 for (Driver driver : Drivers) {
@@ -352,6 +357,7 @@ public class Sprint1 {
                     DestinationArrival DA = new DestinationArrival(d,r.c,formattedDestArrivalTime);
                     r.Events.add(DA);
                     d.setRide(null);
+                    r.c.inRide = false;
                 }
 
                 else
