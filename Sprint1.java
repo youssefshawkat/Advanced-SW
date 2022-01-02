@@ -351,6 +351,7 @@ public class Sprint1 {
                     String formattedDestArrivalTime = destArrivalTime.format(formatDestArrivalTime);
                     DestinationArrival DA = new DestinationArrival(d,r.c,formattedDestArrivalTime);
                     r.Events.add(DA);
+                    d.setRide(null);
                 }
 
                 else
