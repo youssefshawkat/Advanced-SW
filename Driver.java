@@ -14,6 +14,7 @@ public class Driver extends User{
     public float balance = 0;
     public boolean Verified = false;
     public boolean available = true;
+    public Ride currentRide;
 
     Driver()
     {
@@ -41,6 +42,16 @@ public class Driver extends User{
     public void setBalance(float bal)
     {
         balance += bal;
+    }
+
+    public void setRide(Ride r){
+
+        this.currentRide = r;
+    }
+
+    public Ride getCurrentRide(){
+
+        return currentRide;
     }
 
     public float getBalance()

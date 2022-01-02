@@ -342,6 +342,15 @@ public class Sprint1 {
                 if (d.available == false)
                 {
                     d.available = true;
+                    Ride r = d.getCurrentRide();
+                    System.out.println("Rate the driver (out of 5)");
+                    int rate = input.nextInt();
+                    d.SetAvgRating(r.c.RateDriver(d, rate));
+                    LocalDateTime destArrivalTime = LocalDateTime.now();
+                    DateTimeFormatter formatDestArrivalTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                    String formattedDestArrivalTime = destArrivalTime.format(formatDestArrivalTime);
+                    DestinationArrival DA = new DestinationArrival(d,r.c,formattedDestArrivalTime);
+                    r.Events.add(DA);
                 }
 
                 else
@@ -558,18 +567,20 @@ public class Sprint1 {
 
                             driver.setBalance(driverPrice);
                             driver.available = false;
+                            driver.setRide(r);
+                            /*
                             System.out.println("Rate the driver (out of 5)");
                             int rate = input.nextInt();
-
                             driver.SetAvgRating(c.RateDriver(driver, rate));
-
                             LocalDateTime destArrivalTime = LocalDateTime.now();
                             DateTimeFormatter formatDestArrivalTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
                             String formattedDestArrivalTime = offerTime.format(formatDestArrivalTime);
-
                             DestinationArrival DA = new DestinationArrival(driver,c,formattedSourceArrivalTime);
                             r.Events.add(DA);
+
+                             */
                             Rides.add(r);
+
 
                             break;
                         }
@@ -625,10 +636,10 @@ public class Sprint1 {
         myFormatObj = DateTimeFormatter.ofPattern("dd-MM");
         formattedDate = date.format(myFormatObj);
         //if the ride matches client's birthday
-        if(c.Birthday.substring(0,5).equals(formattedDate)){
-
-
-            discount = discount+10;
+        if(c.Birthday.length() >= 5) {
+            if (c.Birthday.substring(0, 5).equals(formattedDate)) {
+                discount = discount + 10;
+            }
         }
 
         price = Discount(price,discount);
